@@ -1,0 +1,211 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git mv:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(git config:*)",
+      "Bash(git fetch:*)",
+      "Bash(git stash:*)",
+      "Bash(git merge:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git diff:*)",
+
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh api:*)",
+      "Bash(gh issue:*)",
+
+      "Bash(bun:*)",
+      "Bash(bun run:*)",
+      "Bash(yarn build)",
+      "Bash(pnpm nx run:*)",
+      "Bash(pnpm eslint:*)",
+      "Bash(pnpm test-one:*)",
+      "Bash(npx nx:*)",
+      "Bash(npx nx run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx eslint:*)",
+      "Bash(tsc:*)",
+      "Bash(make:*)",
+
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(wc:*)",
+      "Bash(sort:*)",
+      "Bash(awk:*)",
+      "Bash(xargs:*)",
+      "Bash(comm:*)",
+      "Bash(jq:*)",
+      "Bash(printf:*)",
+      "Bash(xxd:*)",
+      "Bash(du:*)",
+      "Bash(head:*)",
+      "Bash(tree:*)",
+      "Bash(cmp:*)",
+      "Bash(python3:*)",
+
+      "Bash(npm ls:*)",
+      "Bash(npm view:*)",
+      "Bash(brew install:*)",
+      "Bash(brew bundle:*)",
+      "Bash(brew list:*)",
+      "Bash(brew info:*)",
+      "Bash(claude mcp:*)",
+      "Bash(node:*)",
+      "Bash(code:*)",
+      "Bash(chmod:*)",
+      "Bash(test:*)",
+
+      "Bash(.claude/scripts/validate-skill-content.sh:*)",
+      "Bash(.claude/scripts/validate-skill-references.sh:*)",
+      "Bash(.claude/scripts/detect-skill-drift.sh:*)",
+      "Bash(.claude/scripts/generate-plugin-summaries.sh:*)",
+      "Bash(.claude/scripts/review-pr.sh:*)",
+      "Bash(pdftotext:*)",
+      "Bash(uv tool run:*)",
+
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gist.github.com)",
+      "WebFetch(domain:support.claude.com)",
+      "WebFetch(domain:claude.com)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:www.w3.org)",
+      "WebFetch(domain:w3c.github.io)",
+      "WebFetch(domain:webaim.org)",
+      "WebFetch(domain:adrianroselli.com)",
+      "WebFetch(domain:scottaohara.github.io)",
+      "WebFetch(domain:www.scottohara.me)",
+      "WebFetch(domain:www.tpgi.com)",
+      "WebFetch(domain:accessibility.blog.gov.uk)",
+      "WebFetch(domain:www.aditus.io)",
+      "WebFetch(domain:code.visualstudio.com)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:x.com)",
+      "WebFetch(domain:addyosmani.com)",
+      "WebFetch(domain:steipete.com)",
+      "WebFetch(domain:steipete.me)",
+      "WebFetch(domain:www.sanity.io)",
+      "WebFetch(domain:rlancemartin.github.io)",
+      "WebFetch(domain:reading.torqsoftware.com)",
+      "WebFetch(domain:creatoreconomy.so)",
+      "WebFetch(domain:jkrsp.com)",
+      "WebFetch(domain:soul.md)",
+      "WebFetch(domain:souls.directory)",
+      "WebFetch(domain:spawner.vibeship.co)",
+      "WebFetch(domain:mind.vibeship.co)",
+      "WebSearch",
+
+      "mcp__plugin_serena_serena__list_dir",
+      "mcp__plugin_serena_serena__activate_project",
+      "mcp__plugin_serena_serena__read_file",
+      "mcp__plugin_serena_serena__replace_content",
+      "mcp__plugin_serena_serena__get_symbols_overview",
+      "mcp__plugin_serena_serena__find_symbol",
+      "mcp__plugin_serena_serena__find_file",
+      "mcp__plugin_serena_serena__search_for_pattern",
+      "mcp__plugin_serena_serena__list_memories",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_hover",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__figma-remote-mcp__get_screenshot",
+      "mcp__figma-remote-mcp__get_metadata",
+      "mcp__figma-remote-mcp__get_design_context",
+      "mcp__sequential-thinking__sequentialthinking",
+
+      "Skill(deepdive)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git checkout -- .:*)",
+      "Bash(git commit:*)"
+    ],
+    "ask": [],
+    "defaultMode": "default"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "__HOME__/.claude/hooks/session-protocol.sh"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "__HOME__/.claude/hooks/session-end-capture.sh"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "__HOME__/.claude/hooks/pre-compact-capture.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You are a verification checker. Given: $ARGUMENTS\n\nRULE 1: If stop_hook_active is true in the input, respond {\"ok\": true} immediately.\n\nRULE 2: Check if code changes were made (Edit, Write, or file modification mentions in the conversation). If NO code changes, respond {\"ok\": true}.\n\nRULE 3: If code changes were made, check if the last assistant message shows verification evidence: re-reading edited files, running tests/builds, confirming correctness, or stating verification was done. If yes, respond {\"ok\": true}. If no, respond {\"ok\": false, \"reason\": \"Post-flight check: re-read edited files to confirm correctness. Run tests if applicable.\"}",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "__HOME__/.claude/hooks/iteration-guard.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "sonatype-guide@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "serena@claude-plugins-official": true,
+    "figma@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": true,
+    "Notion@claude-plugins-official": true,
+    "learning-output-style@claude-plugins-official": true,
+    "slack@claude-plugins-official": true
+  }
+}
