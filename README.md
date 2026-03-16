@@ -60,8 +60,12 @@ Settings are **copied** (not symlinked) so local permission changes don't dirty 
 │   ├── pre-compact-capture.sh # Before compaction: save context
 │   └── iteration-guard.sh     # After tool failure: detect loops
 ├── reference/
-│   └── operational-rules.md   # Extracted rules (saves context tokens)
+│   ├── investigation-loop.md  # Shared ICD methodology for investigation skills
+│   ├── operational-rules.md   # Extracted rules (saves context tokens)
+│   └── subagent-prompting-patterns.md  # Reusable prompt patterns for subagents
 └── skills/
+    ├── audit/                 # Systematic multi-artifact evaluation
+    ├── challenge/             # Adversarial + divergent review
     ├── chart-master/          # Data visualization
     ├── code-study/            # Spaced repetition codebase learning
     ├── daily/                 # Daily standup and planning
@@ -163,11 +167,13 @@ Skills keep CLAUDE.md focused on principles and behavior. Domain knowledge, meth
 
 | Skill | Trigger | What It Does |
 |-------|---------|-------------|
+| `audit` | Audit, evaluate, or assess a defined scope | ICD loop with rubric-driven evaluation, cross-cutting synthesis, remediation |
+| `challenge` | "Poke holes", "what's wrong with", review before committing | Adversarial + divergent review of any deliverable |
 | `chart-master` | Chart/diagram/visualization requests | Selects chart type from data shape, renders via Mermaid |
 | `code-study` | Understanding a system, educational questions | Explains systems calibrated to your level, spaced repetition scheduling |
 | `daily` | Daily standup, planning | Activity summary across tools, next-actions |
 | `data-analyst` | Data analysis, statistics, BI | Acquire, clean, transform, analyze, visualize data |
-| `deepdive` | Deep research, multi-component investigation | Sequential thinking with subagents, tiered source quality |
+| `deepdive` | Deep research, multi-component investigation | Self-regulating investigation loop with subagents and adversarial teams |
 | `improve` | Self-improvement, accumulated entries | Analyzes mistakes/learnings, proposes CLAUDE.md amendments |
 | `plan` | Multi-step tasks, implementation planning | Investigation, breakdown, audit hardening, execution-ready output |
 | `recall` | "What do I know about X?" | Searches all knowledge sources, ranked by confidence |
@@ -246,7 +252,9 @@ Agents are specialized sub-processes the AI can spawn for specific tasks.
 
 | File | Purpose |
 |------|---------|
+| `reference/investigation-loop.md` | Shared ICD (Investigate-Challenge-Decide) loop methodology. Used by deepdive, research, plan, and any skill doing multi-step investigation. Defines loop structure, stopping criteria, adversarial team escalation, and workspace formats. |
 | `reference/operational-rules.md` | Rules extracted from CLAUDE.md to save context tokens. Covers edit sequencing, intermediate finding persistence, and subagent prompt requirements. Loaded by reference, not included in every prompt. |
+| `reference/subagent-prompting-patterns.md` | Reusable prompt construction patterns for spawning subagents. Evidence depth, tool diversity, budget awareness, authority framing, and applicability matrix by task type. |
 
 ## Customization Guide
 

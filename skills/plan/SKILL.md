@@ -104,25 +104,17 @@ Core differentiator. Actually invoke skills to answer tagged questions.
 5. **Feedback arc**: If findings invalidate skeleton assumptions → restructure in-place, document in Revision Log.
 6. **Edit PLAN.md**: update Status to `investigated` when all questions resolved.
 
-### Phase 4 — Audit & Harden
+### Phase 4 -- Audit & Harden
 
-Three-pass verification using the verifier agent (Task tool, subagent_type: `verifier`).
+Uses the ICD loop's evaluate step (see `~/.claude/reference/investigation-loop.md`) rather than a fixed number of passes. The loop dynamically selects evaluation tools based on what the plan needs:
 
-**Pass 1 — Completeness** (verifier, completeness mode):
-- All steps have concrete actions? Files exist? Dependencies mapped? Test plan present?
-- Deliver PLAN.md as the deliverable, relevant source files as source material.
-
-**Edit PLAN.md**: address each finding inline, update Audit Trail section.
-
-**Pass 2 — Adversarial** (verifier, adversarial mode):
-- Can steps fail? Unstated assumptions? Simpler approach exists? Ordering issues?
-- Deliver PLAN.md + Phase 3 investigation files as source material.
-
-**Edit PLAN.md**: address each finding inline, update Audit Trail section.
-
-**Pass 3 — Feedback** (verifier, feedback mode, conditional):
-- Triggered **only if** Pass 1 or Pass 2 produced 2+ major findings requiring plan changes.
-- Checks: do fixes introduce new gaps? Earlier steps still valid after restructuring?
+1. **Start evaluation**: deliver PLAN.md + Phase 3 investigation files as source material.
+2. **Evaluate dynamically**:
+   - Self-assessment: all steps have concrete actions? Files exist? Dependencies mapped? Test plan present?
+   - Challenge pass (if plan has competing approaches, unstated assumptions, or non-obvious trade-offs): can steps fail? Simpler approach exists? Ordering issues?
+   - Completeness audit (if plan is large or touches many files): did we cover all artifacts in scope?
+3. **Edit PLAN.md**: address each finding inline, update Audit Trail section.
+4. **Re-evaluate if needed**: if evaluation produced 2+ major findings requiring plan changes, run another evaluation pass to check whether fixes introduce new gaps. The loop continues until confidence plateaus.
 
 **Edit PLAN.md**: update Status to `audited`, finalize Audit Trail.
 
