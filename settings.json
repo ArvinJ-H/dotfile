@@ -185,19 +185,12 @@
     ]
   },
   "enabledPlugins": {
-    "sonatype-guide@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
-    "figma@claude-plugins-official": true,
-    "atlassian@claude-plugins-official": true,
-    "Notion@claude-plugins-official": true,
     "learning-output-style@claude-plugins-official": true,
-    "slack@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true
   },
   "fastMode": false
 }
