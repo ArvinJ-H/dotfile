@@ -115,16 +115,17 @@
       "mcp__figma-remote-mcp__get_design_context",
       "mcp__sequential-thinking__sequentialthinking",
 
-      "Skill(deepdive)"
+      "Skill(deepdive)",
+
+      "Bash(git commit:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git checkout -- .:*)"
     ],
     "deny": [
       "Bash(rm -rf /*)",
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)",
-      "Bash(git reset --hard:*)",
-      "Bash(git clean -fd:*)",
-      "Bash(git checkout -- .:*)",
-      "Bash(git commit:*)"
+      "Bash(git reset --hard:*)"
     ],
     "ask": [],
     "defaultMode": "default"
