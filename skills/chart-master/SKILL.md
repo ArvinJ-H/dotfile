@@ -2,12 +2,9 @@
 name: chart-master
 description: Data visualization using Mermaid diagrams. Auto-selects chart type from data shape. Three modes — direct data, research-backed, and codebase architecture. TRIGGER: chart, diagram, or visualization requests.
 allowed-tools: Read, Glob, Grep, WebSearch, WebFetch, Task, AskUserQuestion, ToolSearch
-provides:
-  - data-visualization
-scope-boundary:
-  - external-research
-  - codebase-investigation
 ---
+
+Scope boundary: when you hit the limits of this skill's capability, look up the relevant capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 Visualize data as Mermaid diagrams. Given raw data, a research question, or a codebase architecture question, produce the most appropriate chart with accurate syntax and honest representation.
 

@@ -2,15 +2,11 @@
 name: daily
 description: Activity summary and next-actions across Jira, Slack, and GitHub. Self, teammates, or team-wide. Tiered depth. TRIGGER: daily summary, standup prep, or team activity overview requests.
 allowed-tools: Read, Glob, Grep, Write, Edit, Task, ToolSearch, AskUserQuestion, Bash
-provides:
-  - activity-summary
-scope-boundary:
-  - external-research
 ---
 
 Activity summary and next-actions across Jira, Slack, and GitHub.
 
-**Scope boundary: `external-research`** — see Skill Discovery Protocol manifest in CLAUDE.md for providers. This skill handles activity data from integrated tools; external research is out of scope.
+**Scope boundary: `external-research`** — look up the capability in the CLAUDE.md Capability Manifest and invoke the provider. This skill handles activity data from integrated tools; external research is out of scope.
 
 ## Invocation
 

@@ -3,8 +3,6 @@ name: reflect
 description: Flush unrecorded mistakes and learnings from the current session to ~/.claude/MISTAKES-LOG.md and ~/.claude/LEARNINGS.md. TRIGGER: session has accumulated unrecorded learnings/mistakes, or user asks to reflect.
 disable-model-invocation: true
 allowed-tools: Read, Edit, Write, AskUserQuestion
-provides:
-  - session-reflection
 ---
 
 Review the current session and write any unrecorded observations to the self-improvement files.

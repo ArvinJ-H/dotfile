@@ -3,8 +3,6 @@ name: improve
 description: Analyse ~/.claude/MISTAKES.md and ~/.claude/LEARNINGS.md for patterns and graduation candidates, then propose and apply amendments to CLAUDE.md, skills, or hooks. TRIGGER: user asks to improve the system, or accumulated entries need processing.
 disable-model-invocation: true
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, AskUserQuestion
-provides:
-  - self-improvement
 ---
 
 Analyse the self-improvement files and escalate anything that has reached threshold.
@@ -133,7 +131,7 @@ Verify the skill ecosystem is internally consistent:
 - Skills providing `adversarial-verification` — modes (scanner, adversarial, debate, completeness, feedback) match how callers invoke them
 - Workspace format is consistent: both `external-research` and `codebase-investigation` use `investigations/{topic-slug}/` with README.md
 - Body text uses capability tags from the manifest, not hardcoded `/skillname` references (except self-references)
-- All `provides` tags in skill frontmatter exist in CLAUDE.md manifest. All `scope-boundary` tags map to another skill's `provides`.
+- All capabilities in the CLAUDE.md Capability Manifest have matching skill files. Body-text routing references the manifest.
 - Schedule.md overdue revisits: flag topics >2x interval past due for `codebase-learning` skill attention
 
 Note discrepancies for step 7 proposals. This phase is lightweight — scan references, don't re-read entire skill bodies.

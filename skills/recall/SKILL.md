@@ -2,12 +2,9 @@
 name: recall
 description: Search accumulated knowledge across research files, learnings, mistakes, and skills. Use when checking "what do I already know about X?" TRIGGER: checking prior knowledge before new work, or another skill needs topic context.
 allowed-tools: Read, Glob, Grep
-provides:
-  - knowledge-recall
-scope-boundary:
-  - external-research
-  - codebase-investigation
 ---
+
+Scope boundary: when you hit the limits of this skill's capability, look up the relevant capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 Search all knowledge sources for information on a topic.
 

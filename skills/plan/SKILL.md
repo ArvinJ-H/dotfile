@@ -2,16 +2,11 @@
 name: plan
 description: Autonomous deep planning — investigation, breakdown, audit hardening, execution-ready output. TRIGGER: plan mode activation, multi-step tasks needing investigation.
 allowed-tools: Read, Glob, Grep, Edit, Write, Bash, Task, AskUserQuestion, ToolSearch
-provides:
-  - task-planning
-scope-boundary:
-  - external-research
-  - codebase-investigation
 ---
 
 Produce battle-tested, execution-ready plans for any task type. Five phases: intake, skeleton, breakdown, investigation, audit.
 
-**Scope boundaries: `external-research`, `codebase-investigation`** — /plan orchestrates these but delegates to their providers. Find providers via capability tags in other skills' frontmatter.
+**Scope boundaries: `external-research`, `codebase-investigation`** — /plan orchestrates these but delegates to their providers. Look up the capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 ## Invocation
 

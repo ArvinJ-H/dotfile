@@ -2,12 +2,9 @@
 name: audit
 description: Systematic audit of a defined scope using the ICD loop. Rubric-driven evaluation, cross-cutting synthesis, and remediation. TRIGGER: user asks to audit, evaluate, or assess a defined scope systematically.
 allowed-tools: Read, Glob, Grep, Edit, Write, Task, AskUserQuestion, ToolSearch
-provides:
-  - systematic-audit
-scope-boundary:
-  - external-research
-  - codebase-investigation
 ---
+
+Scope boundary: when you hit the limits of this skill's capability, look up the relevant capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 Systematic audit of a defined scope. Produces a severity-classified finding set with cross-cutting synthesis. Uses the **ICD loop** (see `~/.claude/reference/investigation-loop.md`) with audit-specific iteration strategy, plus a post-loop remediation phase.
 
@@ -50,14 +47,14 @@ Follows the ICD loop (investigate-challenge-decide). Each iteration uses the loo
 
 1. **Define scope**: list all artifacts in scope. Use Glob to enumerate files.
 2. **Build evaluation rubric**: what constitutes good/bad for this scope? Dimensions depend on artifact type:
-   - Skills: frontmatter completeness, step clarity, integration points, scope boundaries
+   - Skills: body-text routing, manifest references, step clarity, integration points, scope boundaries
    - Scripts: correctness, edge cases, portability, error handling
    - Config: valid structure, references resolve, no stale entries
    - Agents: mode clarity, defect taxonomy, evidence grading
 3. **Verify tools work**: read a sample artifact to confirm access and format understanding.
 4. **Surface scan**: structural and mechanical checks (fast, parallelizable):
    - References resolve (file paths, cross-references, capability tags)
-   - Formats are valid (frontmatter parses, markdown renders, scripts have shebangs)
+   - Formats are valid (YAML frontmatter parses, markdown renders, scripts have shebangs)
    - Permissions are correct (scripts executable)
    - Naming conventions followed
    - No dead code or orphaned files

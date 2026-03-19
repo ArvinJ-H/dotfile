@@ -2,15 +2,11 @@
 name: research
 description: General-purpose external research using web, docs, and all available sources. ICD loop with source credibility tracking. Use when investigating topics outside the codebase. TRIGGER: questions requiring info outside the codebase. Prefer newer references; cross-check all.
 allowed-tools: Read, Glob, Grep, WebSearch, WebFetch, Task, TeamCreate, SendMessage, TaskCreate, TaskUpdate, TaskList, TaskGet, ToolSearch, AskUserQuestion, Edit, Write
-provides:
-  - external-research
-scope-boundary:
-  - codebase-investigation
 ---
 
 External research skill. Investigates topics, technologies, concepts, and problems using web search, documentation, and any available source. Uses the **ICD loop** (see `~/.claude/reference/investigation-loop.md`) with research-specific iteration strategy.
 
-**Scope boundary: `codebase-investigation`** -- find providers via capability tags in other skills' frontmatter. If a question spans both internal and external, start with /research for the external component.
+**Scope boundary: `codebase-investigation`** -- look up the capability in the CLAUDE.md Capability Manifest and invoke the provider. If a question spans both internal and external, start with /research for the external component.
 
 ## Core principle: evidence-backed findings
 

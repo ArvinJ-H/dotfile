@@ -5,15 +5,10 @@ description: >
   decisions, alternatives with trade-off analysis, and design evaluation.
   Web-primary, with reference-level mobile/desktop coverage. TRIGGER: design
   decisions, layout trade-offs, interaction patterns, UX evaluation.
-provides:
-  - ui-ux-design
-scope-boundary:
-  - a11y-domain-knowledge
-  - external-research
-  - codebase-investigation
 allowed-tools: Read, Glob, Grep, AskUserQuestion, Task, ToolSearch
-tags: [cross-cutting, design, ui, ux, visual-design, interaction-design]
 ---
+
+Scope boundary: when you hit the limits of this skill's capability, look up the relevant capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 # UI/UX Design Domain Knowledge
 

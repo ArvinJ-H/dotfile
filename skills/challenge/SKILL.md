@@ -5,13 +5,9 @@ description: >
   in what's proposed, find paths that weren't considered. TRIGGER: "poke holes", "challenge
   this", "what's wrong with", "what if", "how about", review before committing to an approach.
 allowed-tools: Read, Glob, Grep, Task, AskUserQuestion, ToolSearch
-provides:
-  - adversarial-review
-  - divergent-analysis
-scope-boundary:
-  - external-research
-  - codebase-investigation
 ---
+
+Scope boundary: when you hit the limits of this skill's capability, look up the relevant capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 Quick adversarial + divergent review of any deliverable. ~2 minutes, not 15. Both lenses by default.
 

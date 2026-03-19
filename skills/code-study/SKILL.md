@@ -2,8 +2,6 @@
 name: code-study
 description: Codebase study assistant. Explains systems calibrated to your level, suggests what to learn next, and tests understanding. Reads and updates ~/.claude/persona.md. TRIGGER: user wants to understand a system or asks educational codebase questions.
 allowed-tools: Read, Glob, Grep, AskUserQuestion, Edit, Write, Task
-provides:
-  - codebase-learning
 ---
 
 Codebase study assistant with three modes. Always reads `~/.claude/persona.md` first to calibrate.

@@ -2,15 +2,11 @@
 name: deepdive
 description: Deep research and investigation using sequential thinking, subagents, and agent teams. Auto-triggers on complex questions or runs manually via /deepdive.
 allowed-tools: Read, Glob, Grep, Edit, Write, WebSearch, WebFetch, Task, TeamCreate, SendMessage, TaskCreate, TaskUpdate, TaskList, TaskGet, ToolSearch, AskUserQuestion
-provides:
-  - codebase-investigation
-scope-boundary:
-  - external-research
 ---
 
 Conduct a deep investigation on a topic, question, or problem. Uses the **ICD loop** (see `~/.claude/reference/investigation-loop.md`) with deepdive-specific iteration strategy.
 
-**Scope boundary: `external-research`** -- find providers via capability tags in other skills' frontmatter. If a question spans both internal and external, /deepdive handles the codebase component.
+**Scope boundary: `external-research`** -- look up the capability in the CLAUDE.md Capability Manifest and invoke the provider. If a question spans both internal and external, /deepdive handles the codebase component.
 
 ## When to auto-trigger
 

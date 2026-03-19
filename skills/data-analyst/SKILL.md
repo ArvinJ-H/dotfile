@@ -2,13 +2,9 @@
 name: data-analyst
 description: Data analysis, business intelligence, and statistical reasoning. Acquire, clean, transform, analyze, and visualize data from any source. TRIGGER: data analysis, statistical questions, or BI reasoning on provided data.
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit, WebSearch, WebFetch, Task, AskUserQuestion, ToolSearch
-provides:
-  - data-analysis
-scope-boundary:
-  - data-visualization
-  - external-research
-  - codebase-investigation
 ---
+
+Scope boundary: when you hit the limits of this skill's capability, look up the relevant capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 Analyze data from any source — files, APIs, databases, web. Profile, clean, transform, analyze, and interpret with statistical rigor. Delegate visualization to `data-visualization` capability.
 

@@ -2,11 +2,9 @@
 name: review
 description: Unified entry point for code review. Asks what kind of review is needed, then delegates to the right tool. TRIGGER: user asks to review code, a PR, or a diff.
 allowed-tools: Bash, Read, Glob, Grep, AskUserQuestion, Edit, Write, Skill, Task
-provides:
-  - code-review
-scope-boundary:
-  - codebase-investigation
 ---
+
+Scope boundary: when you hit the limits of this skill's capability, look up the relevant capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 Start a code review session.
 

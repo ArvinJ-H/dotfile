@@ -92,7 +92,7 @@ The main configuration file. Defines:
 - **Boundaries**: hard always/never rules
 - **Engineering checkpoints**: criteria the AI surfaces when genuinely in tension (extraction, coupling, naming, scope)
 - **Verification discipline**: before/during/after phases with adaptive depth based on risk
-- **Skill discovery protocol**: how skills are found and invoked via capability tags
+- **Skill discovery protocol**: how skills are found and invoked via the Capability Manifest
 - **Session protocol**: what gets recorded during work (corrections, mistakes, gaps, insights)
 
 The template uses `{placeholder}` markers where you fill in your preferences. Every section explains what it controls so you can decide what matters to you.
@@ -159,7 +159,7 @@ Individual mistakes are logged with category, scope, severity, and root cause. W
 
 ### What Skills Are
 
-Skills are modular capabilities that load on demand. Each skill is a markdown file (`skills/{name}/SKILL.md`) with YAML frontmatter declaring its name, trigger conditions, allowed tools, and capability tags. They're tool-agnostic: any AI that can read markdown instructions can follow them.
+Skills are modular capabilities that load on demand. Each skill is a markdown file (`skills/{name}/SKILL.md`) with YAML frontmatter declaring its name, trigger conditions, and allowed tools. They're tool-agnostic: any AI that can read markdown instructions can follow them.
 
 Skills keep CLAUDE.md focused on principles and behavior. Domain knowledge, methodologies, and workflows live in skills instead.
 
@@ -191,19 +191,19 @@ Create `skills/{name}/SKILL.md` with this structure:
 name: my-skill
 description: One-line description. TRIGGER: when this skill activates.
 allowed-tools: Read, Glob, Grep, Edit
-provides:
-  - capability-tag
-scope-boundary:
-  - what-this-skill-doesnt-do
 ---
+
+Scope boundary: when you hit the limits of this skill's capability, look up the relevant capability in the CLAUDE.md Capability Manifest and invoke the provider.
 
 Skill instructions here. Steps, formats, rules.
 ```
 
 Key frontmatter fields:
-- **`provides`**: capability tags other skills can reference
-- **`scope-boundary`**: what triggers handoff to another skill
+- **`name`**: skill identifier (matches directory name)
+- **`description`**: trigger conditions and summary (the AI sees this in the skill listing)
 - **`allowed-tools`**: which tools the skill can use
+
+Capability routing (which skill hands off to which) is managed in the **CLAUDE.md Capability Manifest**, not in frontmatter. Scope-boundary instructions go in the skill body text.
 
 ## Hooks
 
@@ -268,7 +268,7 @@ Agents are specialized sub-processes the AI can spawn for specific tasks.
 
 1. Create `skills/{name}/SKILL.md` with frontmatter (see [Creating New Skills](#creating-new-skills))
 2. Re-run `./setup.sh` to symlink the new skill
-3. The AI discovers it via capability tags in the Skill Discovery Protocol
+3. The AI discovers it via the Capability Manifest in the Skill Discovery Protocol
 
 ### Adjusting Permissions
 
