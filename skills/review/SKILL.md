@@ -15,6 +15,8 @@ Start a code review session.
 - Run `gh pr view --json number,title,state 2>/dev/null` — PR on this branch?
 - Run `git diff --stat` — unstaged local changes?
 - Run `git diff --cached --stat` — staged changes?
+- **Check for existing PR comments**: if PR exists, run `gh api repos/{owner}/{repo}/pulls/{number}/comments --jq '.[].user.login' | sort | uniq -c` to see if reviewers/bots have already commented. Flag this in context.
+- **Detect migration signals**: check if diff touches lockfiles, package manager configs, or CI files. Signals: new/deleted lockfile (yarn.lock, pnpm-lock.yaml, bun.lock), config files (bunfig.toml, .npmrc, .yarnrc), Jenkinsfile/Makefile pm commands changed.
 <!-- PRIVATE:review-project-routing-detect -->
 
 ### 2. Ask
@@ -23,6 +25,8 @@ Use AskUserQuestion with detected context:
 
 **PR exists:** "Review this PR" (full) or "Review local changes" (unstaged/staged only)
 **No PR:** "Review local changes" (unstaged/staged) or "Review against branch" (diff vs base)
+**Migration detected:** Add option "Migration review" (structured migration checklist)
+**PR comments exist:** Note: "{N} existing review comments from {reviewers}. Include in review?"
 
 ### 3. Route
 
@@ -32,7 +36,46 @@ Use AskUserQuestion with detected context:
 
 **Local changes:** Review diff directly. Focus: bugs, security, test coverage, patterns. Output: Blocking Issues / Suggestions / Summary.
 
+**Migration review:** See Migration Review Protocol below.
+
 <!-- PRIVATE:review-project-routing -->
+
+### 3b. Migration Review Protocol
+
+Triggered when the diff changes package manager, build tool, or CI pipeline. A structured 11-step process:
+
+#### Phase A: Merge & Resolve
+1. **Merge main** into migration branch, resolve all conflicts
+2. **Review full diff** against main, every file. Categorize each change: pm-swap (yarn→bun), content change from main, or unrelated change. Flag unrelated changes.
+
+#### Phase B: Validate Against Main
+3. **Check PR review comments** from all reviewers (human + bot). Triage: already resolved, not migration-related (skip), or needs action.
+4. **Fix divergences from main** that aren't migration-related. If main has a pattern and the branch diverges without reason, sync with main.
+5. **Remove stale config** from the old tool (.yarnrc, .npmrc, pnpm-workspace.yaml, old lockfiles).
+
+#### Phase C: CI & Build
+6. **Fix CI scripts** (correct invocation patterns for new pm, error chaining).
+7. **Fix container/Docker** issues (new pm available where needed).
+8. **Test locally** — lint, type check, full build chain. Do NOT skip this. Every edit must be verified before pushing.
+
+#### Phase D: Validate
+9. **Push, wait for CI.** Fix what breaks. If CI fails, reproduce locally first.
+10. **Final audit:**
+    - Grep for ALL references to old pm (yarn, pnpm, npm) across the repo
+    - Verify every diff is necessary and correct
+    - Check config files against official docs (invalid options are silent failures)
+    - Check for version resolution differences (new pm may resolve different versions)
+11. **Squash and clean up** the PR.
+
+#### Migration-Specific Checks
+
+**Version resolution**: Different package managers resolve semver ranges differently. When migrating lockfiles, the new pm may resolve newer patch/minor versions that break the build. Compare versions of key dependencies between old and new lockfiles. Pin in overrides if needed.
+
+**Config file validation**: When migration introduces new config files (bunfig.toml, .npmrc), validate every option against official docs. Invalid options are silently ignored and cause confusion later.
+
+**Lockfile determinism**: Ensure the new pm uses frozen lockfile in CI. Without it, the lockfile can change on every install, breaking cache hashing (e.g. NX remote cache).
+
+**Test what you change**: Every edit must be locally tested before pushing. Run the actual build/lint/test commands, not just "it looks right". If a command can't run locally (CI-only), note it explicitly.
 
 ### 4. Multi-Angle Verification
 
@@ -55,6 +98,7 @@ Spawn a single **Sonnet** subagent (`subagent_type: "general-purpose"`, `model: 
 | **Concurrency** | Async code, threads, locks, shared state, event handlers |
 | **API contract** | Public interfaces, type signatures, protocol/schema changes |
 | **Domain-specific** | Project CLAUDE.md rules, project-specific patterns |
+| **Migration** | Lockfile changes, pm config, version resolution, CI pipeline |
 
 If no signals match any angle, return an empty list.
 

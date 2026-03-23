@@ -4,6 +4,11 @@ All notable changes to the public dotfiles repo.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Each commit should include a changelog entry.
 
+## [2026-03-23] Migration review protocol
+
+### Changed
+- `skills/review/SKILL.md` -- added Migration Review Protocol: 11-step structured process (merge, validate against main, CI/build, final audit) for PM/build/CI migrations; migration signal detection and existing PR comment detection in context gathering; migration dynamic verifier angle
+
 ## [2026-03-17] ICD loop methodology
 
 ### Added
