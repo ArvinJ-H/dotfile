@@ -153,10 +153,9 @@ If the prompt targets codebase investigation, note that `codebase-investigation`
 2. Run lightweight gap analysis per Step 3
 3. If gaps are critical/important → enter questionnaire (Step 4)
 4. If prompt is solid → proceed to execution without interruption
-5. **Route to provider**: After analysis, check the Capability Manifest in CLAUDE.md. If the task matches a provider, invoke it via `Skill(provider)` before using native tools. One clear match, invoke directly. Multiple matches, pick the primary. **Skip if the provider skill is already loaded in this conversation for the current task** (skills persist in context once loaded; re-invoking wastes tokens).
+5. **Route to provider**: After analysis, check the Capability Manifest in CLAUDE.md. If the task matches a provider, invoke it via `Skill(provider)` before using native tools. One clear match, invoke directly. Multiple matches, pick the primary. This step is not optional.
 
 Follow-up prompts within the same task are grouped with the original:
 - Maintain prompt context across follow-ups
 - New information refines the original classification, not a fresh start
 - Only re-run questionnaire if the follow-up changes scope significantly
-- **Provider skill persists**: once a meta-skill is loaded via Skill(), it stays in context. Do not re-invoke on follow-ups unless the task changes to a different provider.
