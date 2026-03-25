@@ -56,28 +56,19 @@ Settings are **copied** (not symlinked) so local permission changes don't dirty 
 │   └── verifier.md            # Adversarial verification agent
 ├── hooks/
 │   ├── session-protocol.sh    # Session start: load context
-│   ├── session-end-capture.sh # Session end: capture learnings
+│   ├── session-end-capture.sh # Session end: flag for reflection
 │   ├── pre-compact-capture.sh # Before compaction: save context
 │   └── iteration-guard.sh     # After tool failure: detect loops
 ├── reference/
-│   ├── investigation-loop.md  # Shared ICD methodology for investigation skills
+│   ├── investigation-loop.md  # ICD loop: process backbone for all meta-skills
 │   ├── operational-rules.md   # Extracted rules (saves context tokens)
-│   └── subagent-prompting-patterns.md  # Reusable prompt patterns for subagents
+│   └── subagent-prompting-patterns.md
 └── skills/
-    ├── audit/                 # Systematic multi-artifact evaluation
-    ├── challenge/             # Adversarial + divergent review
-    ├── chart-master/          # Data visualization
-    ├── code-study/            # Spaced repetition codebase learning
-    ├── daily/                 # Daily standup and planning
-    ├── data-analyst/          # Data analysis and reporting
-    ├── deepdive/              # Deep research with subagents
-    ├── improve/               # Self-improvement: analyze + amend
-    ├── plan/                  # Implementation planning
-    ├── recall/                # Knowledge search across all sources
-    ├── reflect/               # Session reflection + persona updates
-    ├── research/              # External research with workspace output
-    ├── review/                # Multi-angle code review
-    └── ui-ux/                 # UI/UX design domain knowledge
+    ├── think/                 # Meta-skill: analysis, investigation, evaluation
+    ├── work/                  # Meta-skill: implementation, review, shipping
+    ├── prompt/                # Always-on prompt analysis and routing
+    ├── code-study/            # Standalone: spaced repetition codebase learning
+    └── _archive/              # Absorbed standalone skills (backup)
 ```
 
 ## Core Configuration
@@ -92,7 +83,7 @@ The main configuration file. Defines:
 - **Boundaries**: hard always/never rules
 - **Engineering checkpoints**: criteria the AI surfaces when genuinely in tension (extraction, coupling, naming, scope)
 - **Verification discipline**: before/during/after phases with adaptive depth based on risk
-- **Skill discovery protocol**: how skills are found and invoked via the Capability Manifest
+- **Skills**: ICD loop backbone, Capability Manifest for routing between meta-skills
 - **Session protocol**: what gets recorded during work (corrections, mistakes, gaps, insights)
 
 The template uses `{placeholder}` markers where you fill in your preferences. Every section explains what it controls so you can decide what matters to you.

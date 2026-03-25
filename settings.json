@@ -116,8 +116,6 @@
       "mcp__figma-remote-mcp__get_design_context",
       "mcp__sequential-thinking__sequentialthinking",
 
-      "Skill(deepdive)",
-
       "Bash(git commit:*)",
       "Bash(git push --force:*)",
       "Bash(git push -f:*)",
@@ -190,8 +188,7 @@
     "code-simplifier@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
+    "learning-output-style@claude-plugins-official": true
   },
   "fastMode": false
 }
