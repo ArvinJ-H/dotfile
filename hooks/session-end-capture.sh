@@ -16,8 +16,6 @@ if [ "$EDIT_COUNT" -gt 0 ]; then
   echo "$(date +%Y-%m-%d) $TRANSCRIPT_PATH" >> ~/.claude/pending-reflect
 fi
 
-# Output nothing — SessionEnd can't influence behavior
-cat << 'EOF'
-{"hookSpecificOutput":{}}
-EOF
+# Empty output — SessionEnd can't influence behavior
+echo '{}'
 exit 0

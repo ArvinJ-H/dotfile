@@ -159,28 +159,45 @@ Individual mistakes are logged with category, scope, severity, and root cause. W
 
 ### What Skills Are
 
-Skills are modular capabilities that load on demand. Each skill is a markdown file (`skills/{name}/SKILL.md`) with YAML frontmatter declaring its name, trigger conditions, and allowed tools. They're tool-agnostic: any AI that can read markdown instructions can follow them.
+Skills are modular capabilities that load on demand. Each skill is a markdown file (`skills/{name}/SKILL.md`) with YAML frontmatter declaring its name, trigger conditions, and allowed tools.
 
 Skills keep CLAUDE.md focused on principles and behavior. Domain knowledge, methodologies, and workflows live in skills instead.
 
-### Available Skills
+### Compatibility
 
-| Skill | Trigger | What It Does |
-|-------|---------|-------------|
-| `audit` | Audit, evaluate, or assess a defined scope | ICD loop with rubric-driven evaluation, cross-cutting synthesis, remediation |
-| `challenge` | "Poke holes", "what's wrong with", review before committing | Adversarial + divergent review of any deliverable |
-| `chart-master` | Chart/diagram/visualization requests | Selects chart type from data shape, renders via Mermaid |
-| `code-study` | Understanding a system, educational questions | Explains systems calibrated to your level, spaced repetition scheduling |
-| `daily` | Daily standup, planning | Activity summary across tools, next-actions |
-| `data-analyst` | Data analysis, statistics, BI | Acquire, clean, transform, analyze, visualize data |
-| `deepdive` | Deep research, multi-component investigation | Self-regulating investigation loop with subagents and adversarial teams |
-| `improve` | Self-improvement, accumulated entries | Analyzes mistakes/learnings, proposes CLAUDE.md amendments |
-| `plan` | Multi-step tasks, implementation planning | Investigation, breakdown, audit hardening, execution-ready output |
-| `recall` | "What do I know about X?" | Searches all knowledge sources, ranked by confidence |
-| `reflect` | Session end, persona updates | Captures session learnings, updates persona |
-| `research` | External research | Web research with workspace output and source attribution |
-| `review` | Code review | Multi-angle verification with defect classification |
-| `ui-ux` | Design decisions, layout, interaction patterns | Grounded design decisions with trade-off analysis |
+| Feature | Claude Code | Cursor / VS Code | Other AI tools |
+|---------|------------|-------------------|----------------|
+| Skills (SKILL.md) | Full support (auto-discovery, tool restrictions) | Partial (can read as instructions, no tool gating) | Works if tool reads markdown instructions |
+| Hooks (shell scripts) | Full support (lifecycle events, permission gating) | Not supported | CC-specific; adapt as reference |
+| Settings (settings.json) | Full support | Not applicable | CC-specific |
+| CLAUDE.md | Full support | Full support (read as instructions) | Works in any tool that reads project instructions |
+| Self-improvement files | Full support (hooks trigger reflection) | Manual (no lifecycle hooks) | Manual |
+
+Skills and CLAUDE.md are tool-agnostic. Hooks and settings are Claude Code-specific.
+
+### Meta-Skills
+
+Individual skills are consolidated into 5 meta-skills, each containing multiple workflows routed by an internal dispatcher. The ICD loop (Investigate-Challenge-Decide) is the structural backbone of every meta-skill.
+
+| Meta-skill | Workflows | What It Covers |
+|------------|-----------|---------------|
+| `think` | Research, Deepdive, Challenge, Audit, Recall, Data Analyst | Analysis, investigation, evaluation, data reasoning |
+| `work` | Plan, Review, Ship | Implementation, planning, code review, git-to-PR shipping |
+| `create` | Spark, Tech Blog, Chart Master, UI/UX, Stop-Slop | Creative output, writing, visualization, design |
+| `ops` | Daily, CI Health, CI Troubleshoot, Person Analysis | Status summaries, CI monitoring, build diagnosis |
+| `meta` | Skill Forge, Improve, Reflect, Dotfiles | Self-improvement, skill creation, session reflection |
+
+### Standalone Skills
+
+| Skill | What It Does |
+|-------|-------------|
+| `code-study` | Explains systems calibrated to your level, spaced repetition scheduling |
+| `prompt` | Always-on prompt analysis, gap detection, and routing to meta-skills |
+| `a11y` | Accessibility domain knowledge (private overlay) |
+
+### Archived Skills
+
+Previous standalone skills are preserved in `skills/_archive/` for reference. They were absorbed into the meta-skills above but remain available as backup.
 
 ### Creating New Skills
 
@@ -236,9 +253,15 @@ Session start
 | `session-protocol.sh` | `SessionStart` | Load MISTAKES.md patterns, check pending improvements, set session context |
 | `session-end-capture.sh` | `SessionEnd` | Flag the session transcript for the Reflect workflow (`/meta`) to process |
 | `pre-compact-capture.sh` | `PreCompact` | Save in-progress context to disk before the AI compresses its memory |
-| `iteration-guard.sh` | `PostToolUseFailure` (Bash) | Count consecutive failures; after 2-3, suggest the user stop and rethink |
+| `iteration-guard.sh` | `PostToolUse` (Bash failures) | Count consecutive failures; after 2-3, suggest the user stop and rethink |
+| `skill-protocol.sh`* | `UserPromptSubmit` | Enforce skill gate (mandatory /prompt first), smart follow-up detection |
+| `skill-gate.sh`* | `PreToolUse` | Block tool calls until Skill(prompt) has been invoked |
+| `claudemd-sync-check.sh`* | `PostToolUse` (Edit/Write) | Warn when CLAUDE.md source and deployed copy diverge |
+| `subagent-budget-tracker.sh`* | `PreToolUse` | Track subagent spawning for budget awareness |
 
-Hooks are defined in `settings.json` under the `hooks` key. The `Stop` hook runs a prompt-based verification check that ensures code changes were reviewed before the AI stops working.
+\* Private overlay hooks (not in this public repo).
+
+Hooks are defined in `settings.json` under the `hooks` key.
 
 ## Agents
 
@@ -252,7 +275,7 @@ Agents are specialized sub-processes the AI can spawn for specific tasks.
 
 | File | Purpose |
 |------|---------|
-| `reference/investigation-loop.md` | Shared ICD (Investigate-Challenge-Decide) loop methodology. Used by deepdive, research, plan, and any skill doing multi-step investigation. Defines loop structure, stopping criteria, adversarial team escalation, and workspace formats. |
+| `reference/investigation-loop.md` | ICD (Investigate-Challenge-Decide) loop: the process backbone for all meta-skills. Defines the 6-step dynamic loop, stopping criteria, adversarial verification, and confidence assessment. |
 | `reference/operational-rules.md` | Rules extracted from CLAUDE.md to save context tokens. Covers edit sequencing, intermediate finding persistence, and subagent prompt requirements. Loaded by reference, not included in every prompt. |
 | `reference/subagent-prompting-patterns.md` | Reusable prompt construction patterns for spawning subagents. Evidence depth, tool diversity, budget awareness, authority framing, and applicability matrix by task type. |
 
@@ -268,7 +291,7 @@ Agents are specialized sub-processes the AI can spawn for specific tasks.
 
 1. Create `skills/{name}/SKILL.md` with frontmatter (see [Creating New Skills](#creating-new-skills))
 2. Re-run `./setup.sh` to symlink the new skill
-3. The AI discovers it via the Capability Manifest in the Skill Discovery Protocol
+3. The AI discovers it via the Capability Manifest in CLAUDE.md
 
 ### Adjusting Permissions
 
