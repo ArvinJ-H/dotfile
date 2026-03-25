@@ -6,22 +6,19 @@ Shared methodology for skills that do multi-step investigation: deepdive, resear
 
 ```
 Iteration N:
-  1. Read state     -- STATE.md: known facts, gaps, confidence trajectory
-  2. Plan work      -- solo, parallel subagents, or adversarial team (dynamic)
-  3. Execute        -- investigate per the skill's iteration strategy
-  4. Self-assess    -- update confidence (2D), count new evidence
-  5. Evaluate       -- dynamic: self-check, /challenge, /audit, or combination
-  6. Decide         -- loop, escalate, or stop
+  1. Read state     -- assess where the investigation stands
+  2. Plan work      -- determine what will close the most important gaps
+  3. Execute        -- do the planned work
+  4. Self-assess    -- update understanding of what changed
+  5. Evaluate       -- verify findings through available tools
+  6. Decide         -- determine next action
 ```
 
 ## Iteration Details
 
 ### Step 1: Read State
 
-STATE.md is the investigation's living document. Before each iteration, read it to understand:
-- What's known (accumulated findings, confidence levels)
-- What's not known (active gaps, unresolved questions)
-- Trajectory (is confidence moving? which direction?)
+Assess where the investigation stands. Read STATE.md. What matters now depends on what happened last iteration and what the investigation needs next.
 
 First iteration: STATE.md may not exist yet. Create it with initial scope and questions.
 
@@ -29,11 +26,9 @@ Resumed investigations: prior STATE.md exists. Read it, assess what's changed si
 
 ### Step 2: Plan Work
 
-Dynamic, not prescribed. The loop chooses the work mode based on current state:
+Determine what work will move the investigation forward. The specific mode, team composition, agent count, and tool selection all emerge from the state assessment. They are outputs of this step, not inputs from a lookup table.
 
-- **Solo investigation**: one agent reads, searches, analyzes. Appropriate when gaps are focused and don't require parallel exploration.
-- **Parallel subagents**: spawn agents for independent sub-questions. Appropriate when multiple gaps can be investigated simultaneously. Count and focus driven by what the previous evaluate step found. Max concurrency per skill's configuration (typically 3-4).
-- **Adversarial team**: assigned positions, Toulmin argumentation. See "Adversarial Team Escalation" below.
+What informs the plan: what gaps exist and whether they are independent or coupled, what verification is needed, what the consuming skill's domain requires, what resources best address the current gaps.
 
 ### Step 3: Execute
 
@@ -41,32 +36,27 @@ Run the planned investigation. Skill-specific: deepdive decomposes and explores,
 
 ### Step 4: Self-Assess
 
-After execution, update STATE.md with:
-- New sources consulted this iteration
-- Claims added or changed
-- Confidence update (both dimensions: likelihood and evidence quality)
-- Top remaining gap
+Update STATE.md with what changed this iteration. What was learned, what shifted, what's still open. Update 2D confidence (likelihood and evidence quality). The specific content depends on what the execution produced.
 
 ### Step 5: Evaluate Findings
 
-Dynamic toolkit, not a fixed step. The loop reads the situation and chooses:
+Compose a verification layer from available tools, proportional to what the findings need. Multiple tools can and should run in parallel when the situation warrants.
 
-| Tool | When to use | What it does |
-|------|-------------|-------------|
-| **Self-assessment** | Straightforward iteration, few uncertainties | Agent's own confidence and gap analysis from Step 4 |
-| **`/challenge`** | Findings have competing interpretations, unstated assumptions, non-obvious trade-offs | Adversarial + divergent review. Finds flaws, unconsidered paths |
-| **`/audit`** | Findings need systematic quality assessment, rubric compliance, completeness checking | Evaluates completeness, consistency, rubric adherence |
-| **Both** | High-stakes iteration, complex findings with quality and interpretation concerns | Combined coverage |
+**Available verification tools:**
+- **Self-assessment**: the agent's own analysis from step 4
+- **Adversarial team**: multi-perspective debate. Team size scales dynamically (2 agents for routine validation, more for contested findings). See "Adversarial Verification" below.
+- **Challenge pass**: adversarial + divergent review for assumptions and unconsidered paths
+- **Audit pass**: systematic quality assessment, completeness, rubric compliance
+- **Verifier agent**: code/artifact correctness checking against source material
+- **Any combination**: these are not mutually exclusive options in a lookup table. They compose together based on what the findings actually need.
 
-No prescribed combination. Depth and type of evaluation are proportional to uncertainty and stakes. A straightforward iteration might need only self-assessment. Findings with quality concerns might need an audit pass. Findings with competing interpretations might need a challenge pass. Complex or high-stakes iterations might invoke both.
+The adversarial team is a peer verification mechanism that runs alongside other tools, not an escalation reserved for special cases.
 
 ### Step 6: Decide
 
-Three options:
+Determine the next action based on what the verification layer found. The decision emerges from the evaluation. Core question: "would another iteration change the conclusions?"
 
-- **Loop**: evaluation surfaced gaps, confidence is still moving, another iteration would change conclusions. Continue to next iteration.
-- **Escalate**: evaluation surfaced competing hypotheses or irreconcilable interpretations. Trigger adversarial team (see below).
-- **Stop**: evaluation found no critical gaps, confidence has plateaued, another iteration is unlikely to change conclusions. Proceed to final output.
+If yes, continue. If the verification surfaced something that needs deeper investigation, plan accordingly. If findings have stabilized and verification found no critical gaps, stop and produce output.
 
 ## Stopping Criteria
 
@@ -80,18 +70,17 @@ Qualitative signals, no fixed thresholds:
 
 **Safety valve**: after 5 iterations without convergence, pause and ask the user. Not a cap; the investigation can continue if the user approves.
 
-## Adversarial Team Escalation
+## Adversarial Verification
 
-A loop feature available to any skill. Triggered dynamically when the evaluate step finds:
-- Competing hypotheses that self-assessment cannot resolve
-- Non-obvious trade-offs where a senior engineer would disagree without more context
-- Irreconcilable interpretations of the same evidence
+A verification mechanism available at step 5 of any iteration. Multi-perspective debate that scales with task complexity. Not an escalation path reserved for special cases; a peer tool in the verification layer.
+
+**Team size is dynamic**: 2 perspectives for routine validation, more for genuinely contested findings. The loop determines team size from the state, not from a fixed threshold.
 
 **Mechanics:**
 - Uses TeamCreate with assigned positions
 - Each agent uses Toulmin argumentation: claim, evidence, warrant, qualifier, rebuttal
 - Mandate: stress-test, don't destroy. Moderate disagreement produces better outcomes than maximal disagreement.
-- Rounds continue until positions converge or diminishing progress is detected (same signals as the outer loop). No fixed round count or convergence percentage.
+- Rounds continue until positions converge or diminishing progress is detected. No fixed round count or convergence percentage.
 - The debate moderator assesses convergence qualitatively.
 - Each agent writes findings to workspace files (`team-{position-slug}.md`)
 
@@ -136,11 +125,11 @@ Items resolved → moved to Findings with resolution note.}
 
 ### Iteration N
 - **Focus**: {what this iteration investigated}
-- **Work mode**: {solo / N parallel subagents / adversarial team}
-- **Evaluation**: {self-check / challenge / audit / combination}
-- **Verdict**: {loop / escalate / stop}
-- **Key changes**: {claims added, changed, or removed}
-- **Gaps surfaced**: {new gaps from evaluation}
+- **Work mode**: {what was planned and why}
+- **Verification**: {what tools composed the verification layer and what they found}
+- **Decision**: {what was decided and why}
+- **Key changes**: {what shifted in findings or confidence}
+- **Open**: {what remains after this iteration}
 
 ## Stop Challenge Record
 
@@ -159,7 +148,7 @@ Living documents over per-iteration snapshots. Findings accumulate in a few key 
                        accumulated findings, active gaps
   README.md         -- final synthesized answer (written at loop exit)
   sub-{slug}.md     -- subagent findings (created as needed, one per sub-question)
-  team-{slug}.md    -- adversarial team output (created if escalated)
+  team-{slug}.md    -- adversarial team output (created when verification uses debate)
 ```
 
 ### Audit
@@ -194,7 +183,7 @@ These are orthogonal. High confidence in a low-likelihood finding ("we're confid
 
 ### 2D to 1D Collapse
 
-Downstream consumers using 1D confidence (LEARNINGS.md, /recall rankings) collapse using min(likelihood_tier, confidence_tier):
+Downstream consumers using 1D confidence (LEARNINGS.md, Recall workflow rankings) collapse using min(likelihood_tier, confidence_tier):
 
 | Confidence | Likelihood: almost certain/likely | Likelihood: even odds | Likelihood: unlikely/remote |
 |------------|----------------------------------|----------------------|---------------------------|
