@@ -1,7 +1,7 @@
 # Mistakes -- Patterns
 
 Active mistake patterns (3+ occurrences). Read on session start as hard constraints.
-New mistakes go in `MISTAKES-LOG.md`. /improve escalates patterns here when threshold is hit. Applied patterns (amendment in CLAUDE.md) are deleted -- git preserves history.
+New mistakes go in `MISTAKES-LOG.md`. The Improve workflow (/meta) escalates patterns here when threshold is hit. Applied patterns (amendment in CLAUDE.md) are deleted -- git preserves history.
 
 ### Entry format (for MISTAKES-LOG.md)
 
@@ -18,7 +18,7 @@ New mistakes go in `MISTAKES-LOG.md`. /improve escalates patterns here when thre
 - `<project-name>` -> project-level CLAUDE.md or skills
 
 **Severity**: `minor` | `moderate` | `major` -- prioritises escalation order.
-**Tags**: optional, free-form. Used by `/improve` for cross-category pattern detection.
+**Tags**: optional, free-form. Used by the Improve workflow (/meta) for cross-category pattern detection.
 
 ## Patterns
 

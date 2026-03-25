@@ -7,7 +7,7 @@ PENDING_MSG=""
 
 if [ -f "$PENDING_FILE" ] && [ -s "$PENDING_FILE" ]; then
   ENTRY_COUNT=$(wc -l < "$PENDING_FILE" | tr -d ' ')
-  PENDING_MSG=" PENDING REFLECTIONS: $ENTRY_COUNT previous session(s) flagged for learning capture. Run /reflect to process, then the file will be cleared. Transcripts: $(cat "$PENDING_FILE")"
+  PENDING_MSG=" PENDING REFLECTIONS: $ENTRY_COUNT previous session(s) flagged for learning capture. Run /meta reflect to process, then the file will be cleared. Transcripts: $(cat "$PENDING_FILE")"
 fi
 
 # Validate hook script paths in settings.json

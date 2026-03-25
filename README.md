@@ -103,7 +103,7 @@ Your technical background, comfort levels per domain, knowledge gaps, and learni
 
 - Calibrate explanation depth (skip known concepts, slow down on unfamiliar ones)
 - Connect new ideas to things you already understand
-- Track your growth over time (updated by `/code-study` and `/reflect`)
+- Track your growth over time (updated by `/code-study` and the Reflect workflow in `/meta`)
 
 ### settings.json (Permissions & Plugins)
 
@@ -128,7 +128,7 @@ The core feedback loop that makes the AI get better over time.
      │                           │
      │                     3+ entries in same category?
      │                           │
-     │                     ▼ /improve escalates
+     │                     ▼ /meta improve escalates
      │                  MISTAKES.md (pattern = hard constraint)
      │                           │
      │                     Applied to CLAUDE.md or skill?
@@ -140,20 +140,20 @@ The core feedback loop that makes the AI get better over time.
      │                           │
      │                     confidence: high + 2+ sessions?
      │                           │
-     │                     ▼ /improve graduates
+     │                     ▼ /meta improve graduates
      │                  LEARNINGS-ARCHIVE.md
      │                     + amendment in CLAUDE.md or skill
      │
-     └─ Session ends ──► /reflect captures persona updates
+     └─ Session ends ──► /meta reflect captures persona updates
 ```
 
 ### LEARNINGS.md / LEARNINGS-ARCHIVE.md
 
-Learnings track observations with confidence levels (`low`, `medium`, `high`) and session counts. When a learning reaches high confidence across multiple sessions, `/improve` graduates it into a CLAUDE.md amendment or skill change. The original entry moves to the archive for audit trail.
+Learnings track observations with confidence levels (`low`, `medium`, `high`) and session counts. When a learning reaches high confidence across multiple sessions, the Improve workflow (`/meta`) graduates it into a CLAUDE.md amendment or skill change. The original entry moves to the archive for audit trail.
 
 ### MISTAKES.md / MISTAKES-LOG.md
 
-Individual mistakes are logged with category, scope, severity, and root cause. When a category accumulates 3+ entries across 2+ sessions, `/improve` escalates it to a pattern in MISTAKES.md. Patterns are read on session start as hard constraints. Once the pattern is applied (amendment in CLAUDE.md), it's deleted from MISTAKES.md (git history preserves it).
+Individual mistakes are logged with category, scope, severity, and root cause. When a category accumulates 3+ entries across 2+ sessions, the Improve workflow (`/meta`) escalates it to a pattern in MISTAKES.md. Patterns are read on session start as hard constraints. Once the pattern is applied (amendment in CLAUDE.md), it's deleted from MISTAKES.md (git history preserves it).
 
 ## Skills
 
@@ -234,7 +234,7 @@ Session start
 | Hook | Event | Purpose |
 |------|-------|---------|
 | `session-protocol.sh` | `SessionStart` | Load MISTAKES.md patterns, check pending improvements, set session context |
-| `session-end-capture.sh` | `SessionEnd` | Flag the session transcript for `/reflect` to process |
+| `session-end-capture.sh` | `SessionEnd` | Flag the session transcript for the Reflect workflow (`/meta`) to process |
 | `pre-compact-capture.sh` | `PreCompact` | Save in-progress context to disk before the AI compresses its memory |
 | `iteration-guard.sh` | `PostToolUseFailure` (Bash) | Count consecutive failures; after 2-3, suggest the user stop and rethink |
 
