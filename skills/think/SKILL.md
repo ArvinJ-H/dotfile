@@ -8,50 +8,40 @@ Scope boundary: for implementation invoke /work. For creative output invoke /cre
 
 ## Router
 
-| Signal | Workflow | Type |
+| Signal | Workflow | Dispatch |
 |---|---|---|
-| External info, web sources, library evaluation, "how does X work" | [Research](#research) | ICD |
-| Complex multi-component codebase question, 3+ interconnected systems | [Deepdive](#deepdive) | ICD |
-| "Poke holes", "challenge this", adversarial review, "what if" | [Challenge](#challenge) | Single-pass |
-| Systematic evaluation of a scope, quality assessment | [Audit](#audit) | ICD |
-| "What do I know about", prior knowledge check | [Recall](#recall) | Single-pass |
-| Data, statistics, CSV, analysis, BI reasoning, metrics | [Data Analyst](#data-analyst) | AQCTAV |
-| Unclear | Ask, or default Research | |
+| Analytical question, reasoning, "why does X", evaluate trade-offs | [Analyse](#analyse) | Agent(icd-analyse) |
+| External info, web sources, library evaluation, "how does X work" | [Research](#research) | Agent(icd-research) |
+| Complex multi-component codebase question, 3+ systems | [Deepdive](#deepdive) | Agent(icd-deepdive) |
+| Systematic evaluation of a scope, quality assessment | [Audit](#audit) | Agent(icd-audit) |
+| "Poke holes", "challenge this", adversarial review | [Challenge](#challenge) | Inline |
+| "What do I know about", prior knowledge check | [Recall](#recall) | Inline |
+| Data, statistics, CSV, analysis, BI reasoning, metrics | [Data Analyst](#data-analyst) | Inline |
+| Unclear | Ask, or default Analyse | |
 
-Workflows chain: Recall as pre-flight for Research/Deepdive. Challenge as evaluation phase within any ICD workflow. Data Analyst feeding into Research for evidence.
+Workflows chain: Recall as pre-flight for ICD agents (pass results in task prompt). Challenge as inline evaluation. Data Analyst feeding into Research for evidence. Analyse chains to Research or Deepdive when the problem outgrows general reasoning.
 
 ## ICD Framework
 
-ICD workflows (Research, Deepdive, Audit) follow a per-iteration loop. Every iteration runs these 6 steps in order. Do not skip or reorder. Mechanical details in `~/.claude/reference/investigation-loop.md`.
+ICD workflows dispatch to dedicated agents. Each agent runs the full 6-step loop (read state, plan work, execute, self-assess, evaluate, decide) as its primary task. The agent prompt IS the ICD process; steps cannot be skipped because they are the agent's task definition. Mechanical details in `~/.claude/reference/investigation-loop.md`.
 
-### Per-iteration loop
+### Dispatching
 
-**Step 1 -- Read state**: read STATE.md before doing anything else. First iteration: create STATE.md with scope, questions, and initial confidence. Subsequent: re-read STATE.md, assess what changed. STATE.md format is defined in `investigation-loop.md` (includes: scope, findings with evidence basis, confidence history table, active gaps, iteration log, stop challenge record).
+When routing to an ICD workflow:
+1. Determine area and slug for the workspace (areas: tiny/, personal/, methodology/, a11y/, ai-literacy/, external/, work/)
+2. Run Recall pre-flight if applicable
+3. Spawn the corresponding agent with a task prompt containing: the user's question/task, the area and slug, any Recall results, scope boundaries or chain instructions
+4. After agent completes, read the workspace README.md
+5. Present findings to the user
 
-**Step 2 -- Plan work**: determine what will move the investigation forward. The specific mode, team composition, agent count, and tool selection emerge from the state assessment. They are outputs of this step, not inputs from a lookup table.
+### Chaining
 
-**Step 3 -- Execute**: do the planned work per the workflow's iteration strategy. Create workspace at `~/.claude/investigations/<area>/{slug}/`. Pre-flight: Recall for the topic. Decompose via `mcp__sequential-thinking__sequentialthinking` (anchor in problem structure, not generic frameworks).
+Analyse may recommend chaining to Research or Deepdive. If the agent's README.md or STATE.md contains a chain recommendation, spawn the recommended agent with the updated scope.
 
-**Step 4 -- Self-assess**: update STATE.md with what changed this iteration. What was learned, what shifted, what's still open. Update 2D confidence (likelihood + evidence quality).
+### Workspace
 
-**Step 5 -- Evaluate**: compose a verification layer from available tools, proportional to what the findings need. Tools run in parallel:
-- Self-assessment (from step 4)
-- Adversarial team: multi-perspective debate, team size scales dynamically
-- [Challenge](#challenge) pass: assumptions + unconsidered paths
-- Audit pass: completeness, rubric compliance
-- Verifier agent: code/artifact correctness
-- Any combination: not a lookup table. Compose based on what findings need.
-
-**Step 6 -- Decide**: determine next action based on what the verification layer found. Core question: "would another iteration change the conclusions?" If yes, continue. If findings stabilized and no critical gaps, stop and produce output.
-- **Stop challenge**: "is stopping premature?" Depth proportional to remaining uncertainty.
-- **Safety valve**: 5 iterations without convergence -> pause, ask user.
-- **Exit**: write README.md.
-
-### Shared Infrastructure
-
-**Workspace** (ICD workflows):
 ```
-~/.claude/investigations/<area>/{slug}/
+~/.claude/investigations/{area}/{slug}/
   STATE.md       -- iteration log, confidence, gaps (living document)
   README.md      -- final deliverable (at exit)
   sub-{slug}.md  -- subagent findings (one per sub-question)
@@ -60,109 +50,43 @@ ICD workflows (Research, Deepdive, Audit) follow a per-iteration loop. Every ite
   eval-{slug}.md -- audit only: per-artifact evaluation
 ```
 
-**Subagents**: per `~/.claude/reference/subagent-prompting-patterns.md`. Requirements: authority framing, tool hints, evidence depth, budget awareness, self-tracking. Each agent writes to workspace (mandatory, not message-only).
-
-**File verification**: Glob for expected files after agents complete. Missing -> re-spawn once. Still missing -> note gap in STATE.md.
-
 **Confidence**: 2D model (likelihood x evidence quality). See investigation-loop.md for levels, collapse table, and stopping criteria.
 
 **Learning extraction**: max 3 entries per session. `confidence: low`, `action: needs-verification`.
 
 ---
 
+## Analyse
+
+General-purpose analytical reasoning. The default when /think is invoked. Dispatches to `Agent(icd-analyse)`.
+
+**When**: reasoning needed (not retrieval), not external sources (Research), not 3+ codebase systems (Deepdive), not systematic evaluation (Audit).
+
+**Scope boundary**: chains to Research (needs external sources) or Deepdive (reveals multi-system complexity). The agent writes chain recommendations to STATE.md.
+
+---
+
 ## Research
 
-External research via web, docs, all available sources.
+External research via web, docs, all available sources. Dispatches to `Agent(icd-research)`.
 
-**Core principle**: every claim must be traceable to a source. No unsourced assertions.
+**Core principle**: every claim traceable to a source. No unsourced assertions.
 
 **Scope boundary**: codebase questions -> Deepdive instead.
 
 <!-- PRIVATE:think-research-area-routing -->
 
-### Source Credibility
-
-| Tier | Source type | Trust |
-|------|-----------|-------|
-| 1 | Official docs, specs, RFCs, peer-reviewed papers | Primary evidence |
-| 2 | Reputable publications, conference talks, reference books | Free use, cross-reference |
-| 3 | SO (high-vote), cited blogs, official forums | Verify against Tier 1-2 |
-| 4 | Individual blogs, tutorials, low-vote posts, social media | Supplement only |
-
-Prefer Tier 1-2. Flag credibility gaps. Contradictions default to higher tier. Flag >1yr sources on fast-moving topics. No hallucinated citations.
-
-### Deliverable Detection
-
-| Type | Trigger | Shape |
-|------|---------|-------|
-| Comparison | "X vs Y", evaluating options | Matrix + recommendation + trade-offs |
-| Explainer | "how does X work" | Breakdown, sources, gotchas |
-| Decision brief | "should we use" | Context > Options > Recommendation > Risks |
-| Implementation guide | "how to", "step-by-step" | Prerequisites > Steps > Gotchas > Verification |
-| Troubleshooting | "why does X fail" | Symptoms > Causes > Solutions > Verification |
-| General | Anything else | Findings > Analysis > Open questions |
-
-### Iteration Strategy
-
-**First iteration**:
-1. Decompose: break into sub-questions, map known (from Recall) vs unknown.
-2. Initial survey: WebSearch to establish landscape.
-3. Source audit: for each sub-question, note the highest credibility tier reached. If any has only Tier 3-4 sources, flag and actively search for Tier 1-2 alternatives.
-4. Write STATE.md, evaluate.
-
-Continue if: 3+ sub-questions, contradictory sources, deep topic, 5+ sources, or credibility gaps on critical sub-questions.
-
-**Subsequent**: parallel subagents (max 4) for source analysis. Each: search, read, extract, track credibility tier. Write `sub-{slug}.md`.
-
-Format per subagent file:
-```markdown
-# {Sub-question}
-**Agent**: {description} | **Date**: YYYY-MM-DD
-## Findings
-{Key findings with source citations}
-## Sources
-{Numbered: URL, title, date, credibility tier}
-## Gaps
-{What couldn't be answered, weak sourcing areas}
-```
-
-### Output
-
-Per deliverable type. Each finding: likelihood, confidence, evidence basis (tier), recency flag. README.md: consolidated sources with credibility assessment.
-
 ---
 
 ## Deepdive
 
-Deep codebase investigation using decomposition and parallel subagents.
-
-**Rule**: always write findings to disk. Do not hold findings in context only. Every iteration updates STATE.md.
+Deep codebase investigation. Dispatches to `Agent(icd-deepdive)`.
 
 **Scope boundary**: external/web questions -> Research instead. If question spans both, Deepdive handles codebase component.
 
 <!-- PRIVATE:think-deepdive-area-routing -->
 
-### Auto-trigger
-
-Run autonomously when ALL true:
-- 3+ interconnected components
-- Initial exploration raises more questions than answers
-- Existing skills/research don't cover it
-- User energy suggests exploration
-
-Cost-conservative: strict first-iteration criteria.
-
-### Iteration Strategy
-
-**First**: decompose via sequential thinking (anchor in problem structure, justify branch choices) -> map sub-questions with evidence requirements -> STATE.md -> evaluate.
-
-Continue if: 3+ sub-questions, 3+ components, 3+ unknowns, competing hypotheses, outside coverage.
-
-**Subsequent**: parallel subagents (max 3). Codebase sequence: `Grep (entry points) -> Read (context) -> Grep (references) -> Read (connected code)`. Each writes `sub-{slug}.md` with evidence source table: `| # | Source (file:line or URL) | Tool | Key Finding |`.
-
-### Output
-
-Lead with answer, then evidence. Each finding: likelihood + confidence, evidence basis, dissent (if any).
+**Auto-trigger** (dispatch autonomously when ALL true): 3+ interconnected components, initial exploration raises more questions than answers, existing skills/research don't cover it.
 
 ---
 
@@ -209,6 +133,10 @@ Per attack surface: unstated assumptions, missing error paths, coupling introduc
 
 When used as evaluate step within ICD: focus on what the investigation DIDN'T cover. Plan with audit trail -> skip covered areas, always run divergent.
 
+### Thinking Floor (lightweight)
+
+Challenge already embeds adversarial thinking, but apply the floor to Challenge's own output: what assumptions did the *challenge itself* not question? What framing did the input impose that the adversarial pass accepted uncritically?
+
 ### Output
 
 Findings per lens, each with: severity (critical/important/minor), what, why it matters, what to check. For file output, include a **Synthesis** section: which findings, if any, should change the approach?
@@ -217,15 +145,11 @@ Findings per lens, each with: severity (critical/important/minor), what, why it 
 
 ## Audit
 
-Systematic rubric-driven evaluation of a defined scope. Full methodology: [audit.md](audit.md).
+Systematic rubric-driven evaluation. Dispatches to `Agent(icd-audit)`. Full reference: [audit.md](audit.md).
 
-NOT for: single-file code review (use `code-review` capability), codebase exploration (use Deepdive), or external research (use Research).
+NOT for: single-file code review, codebase exploration (Deepdive), or external research (Research).
 
-**Key pattern**: first iteration calibrates (scope enumerate + rubric + surface scan), subsequent iterations do deep per-artifact evaluation in batches (max 3 concurrent subagents). Cross-cutting synthesis every evaluation phase. Post-loop remediation (user-gated).
-
-**Artifacts**: TRACKER.md (scope inventory + findings), eval-{slug}.md (per-artifact).
-
-**Severity**: critical (breaks functionality) > major (significant gap) > minor (inconsistency) > info (observation).
+**Severity**: critical > major > minor > info.
 
 ---
 
@@ -253,7 +177,8 @@ Knowledge search across accumulated sources. Single-pass, read-only.
 3. Archive files (`_archive/`): read matched sections in context (not full files).
 4. Read matched sections from MISTAKES.md and LEARNINGS.md with confidence levels.
 5. Check persona.md comfort level for the topic area.
-6. Synthesize: **Known** (strong evidence) > **Uncertain** (low confidence) > **Not Found** (searched, empty) > **Suggested Next** (scope boundary to research/deepdive).
+6. Synthesize: **Known** (strong evidence) > **Uncertain** (low confidence) > **Not Found** (searched, empty) > **Suggested Next** (scope boundary to research/deepdive/analyse).
+7. **Thinking Floor (lightweight)**: What's absent from accumulated knowledge that matters for this query? What recalled knowledge might be outdated or wrong given current context?
 
 ### Ranking
 

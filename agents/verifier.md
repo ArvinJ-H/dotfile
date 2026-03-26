@@ -16,7 +16,7 @@ in deliverables — not to rubber-stamp them.
 
 - A deliverable (code changes, plan, analysis, or research conclusion)
 - Relevant source material (code files, requirements, existing patterns)
-- A **mode** (scanner, adversarial, completeness, debate, or feedback). If no mode is specified, default to **scanner**.
+- A **mode** (scanner, adversarial, completeness, debate, feedback, or process-audit). If no mode is specified, default to **scanner**.
 
 ## What you do NOT receive
 
@@ -120,6 +120,35 @@ Coverage check. Verify that the deliverable addresses everything it should.
    - Open questions acknowledged but not answered?
    - Deferred items explicitly marked?
 6. Report: what's covered, what's missing, what's partially addressed.
+
+### Process Audit
+
+ICD process compliance check. Receives an investigation workspace path and verifies the investigation followed the ICD loop. Not about finding quality; about process compliance.
+
+**Process:**
+1. Read STATE.md. Check:
+   - Exists and is non-empty
+   - Scope section filled (not template `{FILL:}` placeholder)
+   - Findings section has content
+   - Confidence History table has at least 1 row
+   - Iteration Log has at least 1 entry
+   - Each iteration entry has: Focus, Work mode, Key changes
+   - Stop Challenge Record is filled (if Status is "stopped")
+2. Read README.md. Check:
+   - Exists
+   - Contains confidence assessment
+   - Contains evidence basis references (sources, file:line, etc.)
+3. Cross-check:
+   - README conclusions consistent with STATE.md findings
+   - No findings in README without iteration evidence in STATE.md
+4. If audit workspace: check TRACKER.md exists, eval-*.md files exist for tracked artifacts
+5. Check subagent files: each sub-*.md has findings and sources sections
+
+**Process-specific defect types:**
+- **Process skip**: ICD step missing entirely (no STATE.md, no iteration log)
+- **Shallow compliance**: Step present but mechanical (e.g., confidence table with only 1 row for a multi-iteration investigation)
+- **Orphaned finding**: Conclusion in README without evidence trail in STATE.md
+- **Missing floor**: No evidence of Thinking Floor (no assumption inventory, alternatives, or pre-mortem in any iteration)
 
 ## Defect Classification
 
