@@ -4,6 +4,31 @@ All notable changes to the public dotfiles repo.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Each commit should include a changelog entry.
 
+## [2026-03-26] Meta-skill consolidation (43 to 9)
+
+### Added
+- `skills/think/SKILL.md` -- ICD-based meta-skill absorbing research, deepdive, challenge, audit, recall, data-analyst. Assembled with private fragments for area routing.
+- `skills/work/SKILL.md` -- ICD-based meta-skill absorbing plan, review, ship. Moved from private (generic methodology).
+- `skills/prompt/SKILL.md` -- moved from private (generic methodology). Added Capability Manifest routing in always-on behavior.
+- `skills/_archive/` -- 14 absorbed public skills preserved for reference
+- `hooks/session-end-capture.sh` -- fixed invalid JSON output
+
+### Changed
+- `README.md` -- rewritten for 9-skill system: directory structure, skill table, compatibility matrix, private overlay notes
+- `hooks/pre-compact-capture.sh` -- fixed hook schema (hookSpecificOutput to systemMessage), updated skill refs
+- `hooks/session-protocol.sh` -- updated `/reflect` to `Reflect workflow (/meta)`
+- `reference/operational-rules.md` -- updated `/research` to `/think Research workflow`
+- `reference/investigation-loop.md` -- updated `/recall` to `Recall workflow`
+- `skills/code-study/SKILL.md` -- replaced old capability names with meta-skill refs
+- `agents/verifier.md` -- removed stale `provides` frontmatter
+- `settings.json` -- removed superpowers plugin, pruned one-off permissions
+- Preamble files (MISTAKES-LOG.md, MISTAKES.md, LEARNINGS.md, LEARNINGS-ARCHIVE.md) -- replaced `/improve`, `/reflect`, `/recall` with meta-skill workflow refs
+
+### Removed
+- 14 standalone skill symlinks absorbed into meta-skills (research, deepdive, challenge, audit, recall, data-analyst, plan, review, ship, spark, stop-slop, ui-ux, chart-master, code-study references dir)
+- `Skill(deepdive)` from permissions.allow
+- superpowers plugin from enabledPlugins
+
 ## [2026-03-23] Migration review protocol
 
 ### Changed
