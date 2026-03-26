@@ -75,7 +75,7 @@ Total: 4-7 subagents. Timeout: note gaps, don't re-spawn.
 If unresolvable conflicts between verifiers (one confirms, another disproves with equal evidence):
 - Stop for resolution. Surface disagreement to user.
 - Characterize: factual, interpretive, or normative.
-- At scope boundary (codebase-investigation), present providers via AskUserQuestion.
+- At scope boundary, invoke /think (Deepdive workflow) or present providers via AskUserQuestion.
 
 ### 5. Learn
 

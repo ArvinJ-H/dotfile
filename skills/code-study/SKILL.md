@@ -104,7 +104,7 @@ User invokes `/code-study`, `/code-study guide`, or `/code-study quiz`. Also run
 - After failed revisit (low quiz accuracy): reset to shorter interval
 - Per-topic difficulty adaptation: topics the user struggles with get shorter intervals
 
-**Overdue revisits**: If a topic is >2x its interval past due, it's overdue. Skills providing `self-improvement` flag these in health checks.
+**Overdue revisits**: If a topic is >2x its interval past due, it's overdue. The Improve workflow (/meta) flags these in health checks.
 
 ## Persona update rules
 
@@ -118,7 +118,7 @@ User invokes `/code-study`, `/code-study guide`, or `/code-study quiz`. Also run
 
 When auto-updating, add a brief note at the end of the interaction: "Updated persona: [what changed]."
 
-**Cross-reference with skills providing `session-reflection`**: If session reflection already updated persona this session, don't overwrite. Only add new observations or adjust areas it didn't touch.
+**Cross-reference with the Reflect workflow (/meta)**: If session reflection already updated persona this session, don't overwrite. Only add new observations or adjust areas it didn't touch.
 
 **In plan mode**: Defer all persona updates. Append to `## Deferred Persona Updates` in the plan file instead of writing directly. They'll be persisted when execution starts.
 

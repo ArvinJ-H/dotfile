@@ -4,8 +4,6 @@ description: >
   Adversarial verification agent. Reviews deliverables for gaps, incorrect
   assumptions, and blind spots. Use proactively for high-stakes changes
   (architecture, multi-file edits, irreversible decisions).
-provides:
-  - adversarial-verification
 tools: Read, Glob, Grep
 model: sonnet
 maxTurns: 15

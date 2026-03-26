@@ -37,8 +37,8 @@ Plans are discoverable by the recall capability (scans `~/.claude/plans/`).
 
 | Need | Capability |
 |------|-----------|
-| Understanding existing code | codebase-investigation |
-| External research | external-research |
+| Understanding existing code | /think (Deepdive workflow) |
+| External research | /think (Research workflow) |
 | Domain knowledge | domain-specific provider |
 
 4. **Checkpoint** via AskUserQuestion (skip in `--deep`): task classification, skeleton, capabilities, worktree decision. Approve / Adjust / Abort.
@@ -61,7 +61,7 @@ Plans are discoverable by the recall capability (scans `~/.claude/plans/`).
 Core differentiator. Invoke capabilities to answer tagged questions.
 
 1. **Codebase questions**: spawn subagents (general-purpose). For code tasks in git repos, use `isolation: "worktree"`. Each writes to `investigation-{slug}.md`.
-2. **External questions**: invoke external-research provider. Pause + ask if not pre-approved.
+2. **External questions**: invoke /think (Research workflow). Pause + ask if not pre-approved.
 3. **Domain questions**: invoke relevant provider.
 4. **After each investigation returns**: edit PLAN.md immediately. Replace `[?]` with findings. If findings change approach, rewrite steps. If findings invalidate structure, restructure + Revision Log entry.
 5. **Feedback arc**: skeleton assumptions invalidated -> restructure in-place.
@@ -71,9 +71,9 @@ Core differentiator. Invoke capabilities to answer tagged questions.
 
 | Capability | When | How |
 |------------|------|-----|
-| knowledge-recall | Always, Phase 0 | Direct (lightweight) |
-| codebase-investigation | Phase 3, code tasks | Subagent with `isolation: "worktree"` |
-| external-research | Phase 3, when needed | Pause + AskUserQuestion if not pre-approved |
+| /think (Recall workflow) | Always, Phase 0 | Direct (lightweight) |
+| /think (Deepdive workflow) | Phase 3, code tasks | Subagent with `isolation: "worktree"` |
+| /think (Research workflow) | Phase 3, when needed | Pause + AskUserQuestion if not pre-approved |
 | Verifier | Phase 4 | Subagent, `subagent_type: "verifier"` |
 
 ### Phase 4: Audit and Harden
@@ -145,7 +145,7 @@ Uses the ICD evaluate step (see `investigation-loop.md`). Compose verification d
 
 ## Plan Mode Integration
 
-When CC's plan mode activates for a non-trivial task, /plan methodology applies:
+When CC's plan mode activates for a non-trivial task, the Plan workflow applies:
 - Phase 0-1: plan mode exploration
 - Phase 2-3: plan mode design
 - Phase 4: plan mode review

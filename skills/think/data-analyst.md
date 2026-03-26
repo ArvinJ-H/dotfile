@@ -94,7 +94,7 @@ Match framework to question:
 
 ### 6. Visualize
 
-Select chart type, then delegate to `data-visualization` capability.
+Select chart type, then delegate to /create (Chart Master workflow).
 
 | Finding type | Chart | Why |
 |-------------|-------|-----|
@@ -283,8 +283,8 @@ Check `~/.claude/analysis/` for related prior work before starting.
 
 | Capability | Relationship | When |
 |------------|-------------|------|
-| `data-visualization` | Scope boundary (delegate) | Step 6: analyst selects chart type, renderer produces it |
-| `knowledge-recall` | Pre-flight check | Before Acquire: check for prior analyses on this topic |
-| `external-research` | Scope boundary | When data acquisition requires substantial web research |
-| `codebase-investigation` | Scope boundary | When analyzing codebase metrics (coverage, complexity, dependencies) |
-| `adversarial-verification` | Spawn (scanner mode) | Reports with >5 metrics or business-impact findings |
+| /create (Chart Master) | Scope boundary (delegate) | Step 6: analyst selects chart type, renderer produces it |
+| /think (Recall workflow) | Pre-flight check | Before Acquire: check for prior analyses on this topic |
+| /think (Research workflow) | Scope boundary | When data acquisition requires substantial web research |
+| /think (Deepdive workflow) | Scope boundary | When analyzing codebase metrics (coverage, complexity, dependencies) |
+| verifier agent | Spawn (scanner mode) | Reports with >5 metrics or business-impact findings |

@@ -54,8 +54,8 @@ Skip this step if the prompt is not code-related or doesn't reference specific c
 ### 2b. Knowledge enrichment (if applicable)
 
 If the draft could benefit from accumulated knowledge or external research:
-1. If significant gaps remain that would improve the prompt — at scope boundary (`external-research`), look up the capability in the CLAUDE.md Capability Manifest and invoke the provider. Do not create research workspaces or run research from /prompt.
-2. If the prompt targets codebase investigation — at scope boundary (`codebase-investigation`), look up the capability in the CLAUDE.md Capability Manifest and invoke the provider.
+1. If significant gaps remain that would improve the prompt, invoke /think (Research workflow). Do not create research workspaces or run research from /prompt.
+2. If the prompt targets codebase investigation, invoke /think (Deepdive workflow).
 
 Skip if the prompt is self-contained and doesn't require external knowledge.
 
@@ -144,7 +144,7 @@ Ask: "Use this prompt, iterate further, or adjust specific parts?"
 
 One round of adjustment is fine. More than that — the user should edit the prompt directly.
 
-If the prompt targets codebase investigation, note that `codebase-investigation` capability may be more appropriate — look up the capability in the CLAUDE.md Capability Manifest and invoke the provider.
+If the prompt targets codebase investigation, invoke /think (Deepdive workflow) instead.
 
 ## Always-On Behavior
 
