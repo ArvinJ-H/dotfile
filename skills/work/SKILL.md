@@ -28,7 +28,12 @@ Understand what needs to change and why, before changing it. The specific approa
 
 ### Challenge
 
-Verify the work before declaring it done. Compose verification from available tools proportional to what was changed. The [Review workflow](#review) provides structured multi-angle methodology when the change warrants it.
+Verify the work before declaring it done. At minimum, apply the Thinking Floor (`investigation-loop.md`):
+- **Assumption**: What behavior am I assuming that I haven't tested? What edge case would break this?
+- **Alternative**: Is there a simpler approach I didn't consider? Does this duplicate something that already exists?
+- **Pre-mortem**: If this PR gets reverted, what went wrong?
+
+Additionally, compose verification from available tools proportional to what was changed. The [Review workflow](#review) provides structured multi-angle methodology when the change warrants it.
 
 ### Decide
 
@@ -69,9 +74,9 @@ Autonomous deep planning. Full methodology: [plan.md](plan.md).
 
 ## Review
 
-Unified code review entry point. Full methodology: [review.md](review.md).
+Unified review entry point for all change types (code, docs, config, AI configs, infra). Full methodology: [review.md](review.md). Review criteria by change type: [review-criteria.md](review-criteria.md).
 
-**Steps**: detect context -> ask what kind -> route -> multi-angle verify -> learn.
+**Steps**: detect context -> classify change types -> ask what kind -> route -> multi-angle verify -> learn.
 
 **Multi-angle verification** (PBR, Perspective-Based Reading): 3 fixed verifiers (independent scanner, false positive auditor, completeness checker) + 0-3 dynamic verifiers per triage. Runs on every review.
 

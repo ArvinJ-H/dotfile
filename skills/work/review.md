@@ -12,6 +12,12 @@ Detailed code review workflow for the /work meta-skill. Parent SKILL.md handles:
 - Check for existing PR comments: `gh api repos/{owner}/{repo}/pulls/{number}/comments --jq '.[].user.login' | sort | uniq -c`
 - Detect migration signals: diff touches lockfiles, pm configs, CI files? Signals: new/deleted lockfile, config files (bunfig.toml, .npmrc), Jenkinsfile/Makefile pm commands changed.
 
+### 1b. Classify changes
+
+Classify each changed file using 3-tier structural detection (path patterns, known filenames, extension fallback). See [review-criteria.md](review-criteria.md) for the full detection table.
+
+Report the change type breakdown: e.g., "12 code, 3 docs, 1 AI config, 2 config". This shapes which review criteria apply and which PBR angles to spawn. For mixed PRs, all detected types get reviewed.
+
 ### 2. Ask
 
 Use AskUserQuestion with detected context:
@@ -45,6 +51,10 @@ Spawn a single Sonnet subagent to analyze the diff. Return 0-3 dynamic angles:
 | API contract | Public interfaces, type signatures, protocol changes |
 | Domain-specific | Project CLAUDE.md rules, project patterns |
 | Migration | Lockfile changes, pm config, version resolution, CI |
+| AI config | Files matching AI config patterns (CLAUDE.md, .cursorrules, AGENTS.md, .windsurf/, etc.) |
+| Docs accuracy | Docs changed alongside code (verify docs match implementation) |
+| Config impact | Build/CI/linter config changes (backwards compat, security) |
+| Infra | Terraform, K8s, Docker, cloud config (security, cost, blast radius) |
 
 #### Phase 2: Spawn verifiers (all parallel)
 
