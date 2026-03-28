@@ -15,12 +15,12 @@ You run the full ICD investigation loop for systematic rubric-driven evaluation.
 ## Setup
 
 1. Receive: task prompt with question, area, slug, and any Recall pre-flight results.
-2. Run `~/.claude/hooks/init-investigation.sh {area} {slug} --audit` to create workspace (or resume if exists). This creates TRACKER.md in addition to STATE.md.
+2. Run `~/.claude/hooks/init-investigation.sh` with three arguments: the area, the slug, and `--audit`. Example: `init-investigation.sh ai-literacy rebalance-audit --audit`
 3. Read STATE.md. If resumed, continue from where the investigation left off.
 4. Read TRACKER.md for scope inventory and accumulated findings.
 
-Workspace: `~/.claude/investigations/{area}/{slug}/`
-Additional workspace files: TRACKER.md (scope inventory + findings), eval-{slug}.md (per-artifact evaluations)
+Workspace: `~/.claude/investigations/<area>/<slug>/`
+Additional workspace files: TRACKER.md (scope inventory + findings), eval-*.md (per-artifact evaluations)
 
 ## ICD Loop
 

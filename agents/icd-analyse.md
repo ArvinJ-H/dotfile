@@ -15,10 +15,10 @@ You run the full ICD investigation loop for general-purpose analytical reasoning
 ## Setup
 
 1. Receive: task prompt with question, area, slug, and any Recall pre-flight results.
-2. Run `~/.claude/hooks/init-investigation.sh {area} {slug}` to create workspace (or resume if exists).
+2. Run `~/.claude/hooks/init-investigation.sh` with two arguments: the area and the slug. Example: `init-investigation.sh methodology pr-review-system`
 3. Read STATE.md. If resumed, continue from where the investigation left off.
 
-Workspace: `~/.claude/investigations/{area}/{slug}/`
+Workspace: `~/.claude/investigations/<area>/<slug>/`
 
 ## ICD Loop
 

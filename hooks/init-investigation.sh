@@ -6,8 +6,8 @@
 # Usage: init-investigation.sh {area} {slug} [--audit]
 # Areas: tiny/, personal/, methodology/, a11y/, ai-literacy/, external/, work/
 
-AREA="${1:?Usage: init-investigation.sh {area} {slug} [--audit]}"
-SLUG="${2:?Usage: init-investigation.sh {area} {slug} [--audit]}"
+AREA="${1:?Usage: init-investigation.sh <area> <slug> [--audit]}"
+SLUG="${2:?Usage: init-investigation.sh <area> <slug> [--audit]}"
 AUDIT=false
 [ "${3:-}" = "--audit" ] && AUDIT=true
 
