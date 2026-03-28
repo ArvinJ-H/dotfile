@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# Pre-commit hook: block references to the private repo in public dotfiles.
+# Allows <!-- PRIVATE:... --> fragment injection markers (anchors for setup.sh).
+# Install: git config core.hooksPath git-hooks
+
+set -euo pipefail
+
+# Patterns that indicate private repo leakage.
+# Case-insensitive grep, one pattern per line.
+PATTERNS=(
+  'private overlay'
+  'private repo'
+  'dotfiles/private'
+  'dotfiles-private'
+  'moved from private'
+  'private overlay only'
+  'private skills'
+  'private hooks'
+  'private fragments'
+  'private override'
+  'PRIVATE_DIR'
+)
+
+# Build combined regex (OR of all patterns).
+regex=""
+for p in "${PATTERNS[@]}"; do
+  if [ -z "$regex" ]; then
+    regex="$p"
+  else
+    regex="$regex|$p"
+  fi
+done
+
+found=0
+
+while IFS= read -r file; do
+  # Skip this hook (it necessarily contains the patterns it checks for)
+  [ "$file" = "git-hooks/pre-commit" ] && continue
+
+  # Skip binary files
+  if file --brief --mime "$file" 2>/dev/null | grep -q 'charset=binary'; then
+    continue
+  fi
+
+  # Grep for prohibited patterns, excluding <!-- PRIVATE:... --> markers
+  matches=$(grep -inE "$regex" "$file" 2>/dev/null | grep -v '<!-- PRIVATE:' || true)
+
+  if [ -n "$matches" ]; then
+    if [ "$found" -eq 0 ]; then
+      echo "BLOCKED: private repo references found in staged files:"
+      echo ""
+    fi
+    echo "  $file"
+    echo "$matches" | while IFS= read -r line; do
+      echo "    $line"
+    done
+    echo ""
+    found=1
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACM)
+
+if [ "$found" -eq 1 ]; then
+  echo "Remove private repo references before committing."
+  echo "If a match is a false positive, update git-hooks/pre-commit."
+  exit 1
+fi

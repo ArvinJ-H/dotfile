@@ -7,14 +7,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Each commit sh
 ## [2026-03-26] Meta-skill consolidation (43 to 9)
 
 ### Added
-- `skills/think/SKILL.md` -- ICD-based meta-skill absorbing research, deepdive, challenge, audit, recall, data-analyst. Assembled with private fragments for area routing.
-- `skills/work/SKILL.md` -- ICD-based meta-skill absorbing plan, review, ship. Moved from private (generic methodology).
-- `skills/prompt/SKILL.md` -- moved from private (generic methodology). Added Capability Manifest routing in always-on behavior.
+- `skills/think/SKILL.md` -- ICD-based meta-skill absorbing research, deepdive, challenge, audit, recall, data-analyst
+- `skills/work/SKILL.md` -- ICD-based meta-skill absorbing plan, review, ship
+- `skills/prompt/SKILL.md` -- prompt analysis skill with Capability Manifest routing in always-on behavior
 - `skills/_archive/` -- 14 absorbed public skills preserved for reference
 - `hooks/session-end-capture.sh` -- fixed invalid JSON output
 
 ### Changed
-- `README.md` -- rewritten for 9-skill system: directory structure, skill table, compatibility matrix, private overlay notes
+- `README.md` -- rewritten for 9-skill system: directory structure, skill table, compatibility matrix
 - `hooks/pre-compact-capture.sh` -- fixed hook schema (hookSpecificOutput to systemMessage), updated skill refs
 - `hooks/session-protocol.sh` -- updated `/reflect` to `Reflect workflow (/meta)`
 - `reference/operational-rules.md` -- updated `/research` to `/think Research workflow`
@@ -39,8 +39,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Each commit sh
 ### Added
 - `reference/investigation-loop.md` -- shared ICD (Investigate-Challenge-Decide) loop methodology for investigation skills
 - `reference/subagent-prompting-patterns.md` -- reusable prompt construction patterns for subagents (evidence depth, tool diversity, budget awareness, authority framing)
-- `skills/audit/` -- systematic multi-artifact evaluation using ICD loop (moved from private, no sensitive content)
-- `skills/challenge/` -- adversarial + divergent review of any deliverable (moved from private, no sensitive content)
+- `skills/audit/` -- systematic multi-artifact evaluation using ICD loop
+- `skills/challenge/` -- adversarial + divergent review of any deliverable
 - Challenge prompt block and loop state assessment block in subagent-prompting-patterns.md
 - ICD Loop column in subagent-prompting-patterns.md applicability matrix
 

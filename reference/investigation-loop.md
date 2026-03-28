@@ -89,6 +89,35 @@ A verification mechanism available at step 5 of any iteration. Multi-perspective
 - **Interpretive**: same evidence, different reading. Resolution: seek additional context.
 - **Normative**: different trade-off weighting. Resolution: document trade-off, let user decide.
 
+## Thinking Floor
+
+Mandatory minimum depth before any analytical conclusion. Not a checklist to output; an internal discipline that surfaces only when it catches something.
+
+### Checkpoints
+
+**1. Assumption inventory**: What must be true for this conclusion to hold? Enumerate explicitly. Test the weakest: what evidence supports it? What would falsify it?
+
+**2. Alternative generation**: State the strongest competing interpretation, cause, or approach. Argue *for* it (steel-man), not just against it. Why is the current conclusion better? If "better" depends on unstated criteria, surface those criteria.
+
+**3. Pre-mortem**: Assume the conclusion is wrong. What went wrong? Identify the weakest link in the reasoning chain. What evidence would change your mind?
+
+### Application
+
+| Context | Floor form | Minimum |
+|---|---|---|
+| ICD Step 5 (Evaluate) | Full | All 3 checkpoints, each with at least 1 concrete item |
+| Single-pass analysis (Challenge, Recall) | Lightweight | At least 1 assumption named, 1 alternative considered |
+| Compressed ICD (work, create, ops, meta) | Domain-adapted | Assumption + alternative, phrased for the domain |
+| Trivial/factual queries | Skip | "What's the return type of X?" needs no floor |
+
+### Floor vs. Ceiling
+
+The Thinking Floor sets a minimum, not a target. Complex problems warrant deeper adversarial exploration (full adversarial team, multi-round debate). The floor prevents routine analysis from concluding without basic opposition to its own reasoning.
+
+### Anti-pattern: Mechanical Compliance
+
+The floor fails if it becomes rote. "Assumption: this code works. Alternative: it doesn't. Pre-mortem: a bug." is worse than no floor. Each checkpoint must engage with the *specific* problem. If the assumption inventory doesn't make you reconsider anything, you picked safe assumptions.
+
 ## STATE.md Format
 
 Living document. Updated each iteration, not replaced.
@@ -168,10 +197,6 @@ Living documents over per-iteration snapshots. Findings accumulate in a few key 
 STATE.md tells the story (what happened, in what order, what changed). README.md gives the answer. TRACKER.md (audit only) is the finding index. Everything else is subagent output for drilling in. Most investigations produce 3-5 files total.
 
 **No per-iteration files**: findings from iteration 2 don't go in `iteration-2.md`; they update STATE.md's findings section with a changelog entry. This keeps the workspace navigable even for 5+ iteration investigations.
-
-## Assembly System
-
-This is a shared public reference doc. If skills need private additions (e.g., project-specific evaluation criteria), the fragment injection system supports this: add a `<!-- PRIVATE:investigation-loop-{slug} -->` marker in this file, create a matching fragment in `private/fragments/`. setup.sh handles the pattern.
 
 ## Confidence Model
 

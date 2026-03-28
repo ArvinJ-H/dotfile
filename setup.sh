@@ -68,13 +68,13 @@ fi
 link "$CONFIG_DIR/reference" "$HOME/.claude/reference"
 link "$CONFIG_DIR/agents" "$HOME/.claude/agents"
 
-# Hooks (per-file symlinks to allow private hooks to coexist)
+# Hooks (per-file symlinks to allow overlay hooks to coexist)
 for f in "$CONFIG_DIR"/hooks/*.sh; do
   [ -f "$f" ] || continue
   link "$f" "$HOME/.claude/hooks/$(basename "$f")"
 done
 
-# Skills (per-directory symlinks to allow private skills to coexist)
+# Skills (per-directory symlinks to allow overlay skills to coexist)
 for d in "$CONFIG_DIR"/skills/*/; do
   [ -d "$d" ] || continue
   name="$(basename "$d")"
