@@ -86,7 +86,7 @@ Deep codebase investigation. Dispatches to `Agent(icd-deepdive)`.
 
 <!-- PRIVATE:think-deepdive-area-routing -->
 
-**Auto-trigger** (dispatch autonomously when ALL true): 3+ interconnected components, initial exploration raises more questions than answers, existing skills/research don't cover it.
+**Auto-trigger** (dispatch autonomously when ALL true): 3+ interconnected components, initial exploration raises more questions than answers, existing skills and Research results don't cover it.
 
 ---
 
@@ -163,7 +163,7 @@ Knowledge search across accumulated sources. Single-pass, read-only.
 2. `~/.claude/MISTAKES-LOG.md` entries
 3. `~/.claude/LEARNINGS.md` active observations
 4. `~/.claude/LEARNINGS-ARCHIVE.md` graduated
-5. `~/.claude/investigations/**/*.md` research/deepdive READMEs
+5. `~/.claude/investigations/**/*.md` investigation READMEs
 6. `~/.claude/investigations/**/TRACKER.md` audit findings
 7. `~/.claude/skills/*/SKILL.md` skill definitions
 8. `~/.claude/persona.md` knowledge gaps
@@ -177,7 +177,7 @@ Knowledge search across accumulated sources. Single-pass, read-only.
 3. Archive files (`_archive/`): read matched sections in context (not full files).
 4. Read matched sections from MISTAKES.md and LEARNINGS.md with confidence levels.
 5. Check persona.md comfort level for the topic area.
-6. Synthesize: **Known** (strong evidence) > **Uncertain** (low confidence) > **Not Found** (searched, empty) > **Suggested Next** (scope boundary to research/deepdive/analyse).
+6. Synthesize: **Known** (strong evidence) > **Uncertain** (low confidence) > **Not Found** (searched, empty) > **Suggested Next** (scope boundary to Research/Deepdive/Analyse).
 7. **Thinking Floor (lightweight)**: What's absent from accumulated knowledge that matters for this query? What recalled knowledge might be outdated or wrong given current context?
 
 ### Ranking
